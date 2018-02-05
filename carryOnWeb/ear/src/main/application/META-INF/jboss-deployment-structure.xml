@@ -1,0 +1,20 @@
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.0">
+	<ear-subdeployments-isolated>false</ear-subdeployments-isolated>
+	<deployment>
+
+		<dependencies>
+
+			<module name="deployment.carryOnWeb-ear.ear.carryOnWeb-ejb.jar"
+				export="true" />
+		</dependencies>
+
+	</deployment>
+
+	<sub-deployment name="carryOnWeb-web.war">
+
+		<dependencies>
+			<module name="deployment.carryOnWeb-ear.ear.carryOnWeb-ejb.jar" />
+		</dependencies>
+
+	</sub-deployment>
+</jboss-deployment-structure>

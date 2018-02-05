@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Report Estrazione Invio Modulistica</title>
+</h:head>
+
+<h:body>
+
+
+
+
+
+	<h:form id="myForm">
+
+		<p:panel id="divData" header="Report Estrazione Invio Modulistica"
+			style="width:auto;">
+
+
+
+
+
+			<h:panelGrid columns="2" cellpadding="4">
+
+				<p:dataTable id="tabella" var="richiesta" sortMode="multiple"
+					tableStyle="width: auto; text-align:center ; font-size: smaller"
+					value="#{report.listaTabellaStagingMasters}"
+					emptyMessage="Nessun dato trovato"
+					filteredValue="#{report.filteredTabellaStagingMasters}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  {Refresh} {Exporters}"
+					paginator="true" rows="30" style="margin-bottom:20px">
+
+					<f:facet name="{Refresh}">
+						<p:commandLink ajax="true" update="tabella"
+							actionListener="#{report.popolaTabella}">
+							<h:graphicImage title="Aggiorna la tabella " library="images"
+								name="refresh.png" width="24" />
+						</p:commandLink>
+					</f:facet>
+
+
+					<f:facet name="{Exporters}">
+
+
+
+
+
+						<h:commandLink>
+							<p:graphicImage title="Scarica in formato excel" library="images"
+								name="excel.png" width="24" />
+							<p:dataExporter type="xls" target="tabella" fileName="report" />
+						</h:commandLink>
+
+
+
+						<ui:remove>
+							<h:commandLink>
+								<p:graphicImage library="images" name="pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tabella" fileName="report" />
+							</h:commandLink>
+						</ui:remove>
+						<h:commandLink>
+							<p:graphicImage title="Scarica in formato csv" library="images"
+								name="csv.png" width="24" />
+							<p:dataExporter type="csv" target="tabella" fileName="report" />
+						</h:commandLink>
+
+
+
+						<h:commandLink>
+							<p:graphicImage title="Scarica in formato xml" library="images"
+								name="xml.png" width="24" />
+							<p:dataExporter type="xml" target="tabella" fileName="report" />
+						</h:commandLink>
+					</f:facet>
+
+
+
+					<p:column sortBy="#{richiesta.stagingMaster.idStagingMaster}"
+						filterBy="#{richiesta.stagingMaster.idStagingMaster}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Id" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.idStagingMaster}" />
+					</p:column>
+					
+					
+					<p:column sortBy="#{richiesta.pkDichiarazioneTares}"
+					filterBy="#{richiesta.pkDichiarazioneTares}" filterMatchMode="contains">
+					
+						<f:facet name="header">
+							<h:outputText value="Progressivo Denuncia DENT" />
+						</f:facet>
+						<h:outputText value="#{richiesta.pkDichiarazioneTares}" />
+					</p:column>
+				
+				
+
+					<p:column sortBy="#{richiesta.stagingMaster.fkTipoModulo}">
+						<f:facet name="header">
+							<h:outputText value="Tipo Modulo" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.fkTipoModulo}" />
+					</p:column>
+					<p:column sortBy="#{richiesta.stagingMaster.id.pkIdentificativoModulo}"
+						filterBy="#{richiesta.stagingMaster.id.pkIdentificativoModulo}"
+						filterMatchMode="contains">
+
+						<f:facet name="header">
+							<h:outputText value="Identificativo Modulo" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.id.pkIdentificativoModulo}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Richiesta" />
+						</f:facet>
+						<p:commandLink ajax="false"
+							rendered="#{richiesta.stagingMaster.richiestaXml.length() gt 0}"
+							action="#{report.retrieveRichiesta(richiesta)}">
+							<h:graphicImage title="Scarica la richiesta" library="images"
+								name="download_xml.png" style="width: 24px;" />
+
+						</p:commandLink>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Risposta" />
+						</f:facet>
+
+						<p:commandLink ajax="false"
+							rendered="#{richiesta.stagingMaster.rispostaXml.length() gt 0}"
+							action="#{report.retrieveRisposta(richiesta)}">
+							<h:graphicImage title="Scarica la risposta" library="images"
+								name="download_xml.png" style="width: 24px;" />
+
+						</p:commandLink>
+
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Errori" />
+						</f:facet>
+
+
+						<p:commandLink ajax="false"
+							rendered="#{richiesta.stagingMaster.log.length() gt 0}"
+							action="#{report.retrieveLog(richiesta)}">
+							<h:graphicImage title="Scarica il log" library="images"
+								name="download_log.png" style="width: 24px;" />
+						</p:commandLink>
+					</p:column>
+					<p:column sortBy="#{richiesta.stagingMaster.tmsInserimento}">
+						<f:facet name="header">
+							<h:outputText value="Orario Inserimento" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.tmsInserimento}">
+							<f:convertDateTime locale="it_IT" pattern="d-M-yyyy HH:mm:ss"
+								type="both" dateStyle="short" timeZone="EDT" />
+						</h:outputText>
+					</p:column>
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Lavorata" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.flgLavorata}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Stato" />
+						</f:facet>
+						<h:outputText value="#{richiesta.stagingMaster.stato}" />
+					</p:column>
+				</p:dataTable>
+
+			</h:panelGrid>
+		</p:panel>
+
+
+
+
+	</h:form>
+</h:body>
+</html>
