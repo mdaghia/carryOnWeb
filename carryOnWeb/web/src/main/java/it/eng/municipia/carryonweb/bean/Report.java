@@ -8,8 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import org.primefaces.model.StreamedContent;
@@ -20,11 +22,10 @@ import it.eng.municipa.carryonweb.ejb.IEJBNettunoTares;
 import it.eng.municipa.carryonweb.ejb.IEJBReport;
 import it.eng.municipia.carryon.services.model.StagingMaster;
 import it.eng.municipia.carryonweb.helper.HelperDownload;
-import it.eng.tributi.prodotti.nettuno.common.beans.documento.ICostanti;
 import it.eng.tributi.prodotti.nettuno.services.model.auto.DichiarazioneTares;
 
 @ManagedBean(eager = true)
-@SessionScoped
+@ApplicationScoped
 public class Report implements Serializable
 {
 
@@ -32,6 +33,10 @@ public class Report implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static final String ESITO_KO = "KO";
+
+	private static final String ESITO_OK = "OK";
 
 	@Inject
 	IEJBReport ejbReport;
@@ -45,9 +50,18 @@ public class Report implements Serializable
 	private List<StagingMaster> filteredStagingMasters;
 	private List<CompositeStaging> listaCompositeStaging;
 	private List<DichiarazioneTares> listaDichiarazioneTares;
-	
-	private List <CompositeTabellaStagingMaster> listaTabellaStagingMasters;
+
+	private List<CompositeTabellaStagingMaster> listaTabellaStagingMasters;
 	private List<CompositeTabellaStagingMaster> filteredTabellaStagingMasters;
+	
+	
+	public List<String> getStati(){
+		ArrayList<String> listaStati = new ArrayList<String>();
+		listaStati.add(ESITO_OK);
+		listaStati.add(ESITO_KO);
+		return listaStati;
+	}
+
 	public List<CompositeTabellaStagingMaster> getFilteredTabellaStagingMasters()
 	{
 		return filteredTabellaStagingMasters;
@@ -106,41 +120,56 @@ public class Report implements Serializable
 	{
 
 		popolaTabella();
-
+		
 	}
 
 	public void popolaTabella()
 	{
 		listaTabellaStagingMasters = new ArrayList<CompositeTabellaStagingMaster>();
-		
+
 		List<StagingMaster> listaStagingMaster = ejbReport.retrieveListaStagingMaster();
 		setListaCompositeStaging(ejbReport.retrieveListaCompositeStaging());
 		List<StagingMaster> listaStagingMasterDaVisualizzare = new ArrayList<StagingMaster>();
 
 		for (StagingMaster stagingMaster : listaStagingMaster)
 		{
-			
+
 			for (CompositeStaging compositeStaging : listaCompositeStaging)
 			{
 
 				if (stagingMaster.getId().getPkIdentificativoModulo().equals(compositeStaging.getIdentificativoModulo()))
 				{
-					if(compositeStaging.getPkDichiarazioneTares().equals(new BigDecimal(0)))
+					if (compositeStaging.getPkDichiarazioneTares().equals(new BigDecimal(0)))
 					{
-						CompositeTabellaStagingMaster compositeTabellaStagingMaster = new CompositeTabellaStagingMaster(compositeStaging.getPkDichiarazioneTares(), stagingMaster);
-						//listaStagingMasterDaVisualizzare.add(stagingMaster);
+						String errore = "Scarica il log";
+
+						if (stagingMaster.getLog() != null && !stagingMaster.getLog().isEmpty() && stagingMaster.getLog().length() < 200)
+						{
+							errore = stagingMaster.getLog();
+						}
+
+						CompositeTabellaStagingMaster compositeTabellaStagingMaster = new CompositeTabellaStagingMaster(new BigDecimal(0), stagingMaster, "", new BigDecimal(0), errore);
+
+						// listaStagingMasterDaVisualizzare.add(stagingMaster);
 						listaTabellaStagingMasters.add(compositeTabellaStagingMaster);
-						
-						
+
 					}
 					else
 					{
+						String errore = "Scarica il log";
+
+						if (stagingMaster.getLog() != null && !stagingMaster.getLog().isEmpty() && stagingMaster.getLog().length() < 200)
+						{
+							errore = stagingMaster.getLog();
+						}
 						setListaDichiarazioneTares(ejbNettunoTares.retrieveListaDichiarazioneTares(compositeStaging.getPkDichiarazioneTares().longValue()));
 						for (DichiarazioneTares dichiarazioneTares : listaDichiarazioneTares)
 						{
-							CompositeTabellaStagingMaster compositeTabellaStagingMaster = new CompositeTabellaStagingMaster(compositeStaging.getPkDichiarazioneTares(), stagingMaster);
+							CompositeTabellaStagingMaster compositeTabellaStagingMaster = new CompositeTabellaStagingMaster(new BigDecimal(dichiarazioneTares.getId().getPkDichiarazioneTares()), stagingMaster, dichiarazioneTares.getNumeroDocumento() + "/" + dichiarazioneTares.getAnnoDocumento(), dichiarazioneTares.getCodiceAcsorContribuente(), errore);
+
 							listaTabellaStagingMasters.add(compositeTabellaStagingMaster);
-								//listaStagingMasterDaVisualizzare.add(stagingMaster);
+							continue;
+							// listaStagingMasterDaVisualizzare.add(stagingMaster);
 						}
 					}
 				}
@@ -148,6 +177,7 @@ public class Report implements Serializable
 		}
 
 		setListaStagingMasters(listaStagingMasterDaVisualizzare);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operazione Completata", "Caricamento della tabella completata."));
 	}
 
 	public List<StagingMaster> getListaStagingMasters()

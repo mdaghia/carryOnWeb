@@ -29,7 +29,9 @@ public class EJBReport implements IEJBReport
 
 		try
 		{
-			listaStagingMaster = em.createQuery("from StagingMaster t where t.id.codiceEnte ='A944' and t.flgLavorata='N'").getResultList() ;
+			listaStagingMaster = em.createQuery("from StagingMaster t where"
+				+ " t.id.codiceEnte ='A944' and t.flgLavorata='N'"
+				+ "and t.stato in  ('OK','KO')" ).getResultList() ;
 		}
 		catch (NoResultException e)
 		{
@@ -54,9 +56,12 @@ public class EJBReport implements IEJBReport
 			TypedQuery<CompositeStaging> q = em.createQuery(""
 				+ "select distinct NEW it.eng.municipa.carryonweb.bean.CompositeStaging(t.idStagingMaster,s.fkIdentificativoModulo, s.prgDent) "
 				+ "from StagingMaster t, StagingDettaglio s " 
-				+ "where t.id.pkIdentificativoModulo = s.fkIdentificativoModulo "
-				+ "and s.id.codiceEnte = t.id.codiceEnte  and "
-				+ "t.flgLavorata='N'", CompositeStaging.class) ;
+				+ "where (( t.id.pkIdentificativoModulo = s.fkIdentificativoModulo or t.id.pkIdentificativoModulo is null "
+				+ ")"
+				+ "and ( s.id.codiceEnte = t.id.codiceEnte"
+				+ " or  t.id.codiceEnte is null "
+				+ "  ))and "
+				+ "t.flgLavorata='N'" , CompositeStaging.class) ;
 			
 			listaCompositeStaging = q.getResultList();
 			
