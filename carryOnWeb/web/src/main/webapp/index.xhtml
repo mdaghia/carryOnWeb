@@ -150,6 +150,7 @@
 						<p:column
 							sortBy="#{richiesta.stagingMaster.id.pkIdentificativoModulo}"
 							filterBy="#{richiesta.stagingMaster.id.pkIdentificativoModulo}"
+							filterStyle="width:200px!important"
 							filterMatchMode="contains">
 
 							<f:facet name="header">
@@ -161,10 +162,11 @@
 
 
  
-						<p:column filterBy="#{richiesta.stagingMaster.stato}" headerText="Stato"  filterMatchMode="exact">
+						<p:column filterBy="#{richiesta.stagingMaster.stato}" 
+						headerText="Stato"  filterMatchMode="exact" >
 							  <f:facet name="filter">
-					                <p:selectOneMenu onchange="PF('tabellaRichieste').filter()" >
-					                    <f:selectItem itemLabel="Tutti" itemValue="#{null}" noSelectionOption="true" />
+					                <p:selectOneMenu onchange="PF('tabellaRichieste').filter()"  style="width:30px!important;">
+					                    <f:selectItem itemLabel=" " itemValue="#{null}" noSelectionOption="true" />
 					                    <f:selectItems value="#{report.stati}" />
 					                </p:selectOneMenu>
 					            </f:facet>
@@ -228,7 +230,7 @@
 							filterBy="#{richiesta.protocollo}" filterMatchMode="contains">
 
 							<f:facet name="header">
-								<h:outputText value="Protocollo" />
+								<h:outputText value="Nr./Anno Documento" />
 							</f:facet>
 							<h:outputText value="#{richiesta.protocollo}"
 								rendered="#{richiesta.protocollo.length() gt 0}" />

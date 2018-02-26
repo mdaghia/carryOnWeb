@@ -53,9 +53,9 @@ public class Report implements Serializable
 
 	private List<CompositeTabellaStagingMaster> listaTabellaStagingMasters;
 	private List<CompositeTabellaStagingMaster> filteredTabellaStagingMasters;
-	
-	
-	public List<String> getStati(){
+
+	public List<String> getStati()
+	{
 		ArrayList<String> listaStati = new ArrayList<String>();
 		listaStati.add(ESITO_OK);
 		listaStati.add(ESITO_KO);
@@ -120,7 +120,7 @@ public class Report implements Serializable
 	{
 
 		popolaTabella();
-		
+
 	}
 
 	public void popolaTabella()
@@ -139,7 +139,7 @@ public class Report implements Serializable
 
 				if (stagingMaster.getId().getPkIdentificativoModulo().equals(compositeStaging.getIdentificativoModulo()))
 				{
-					if (compositeStaging.getPkDichiarazioneTares().equals(new BigDecimal(0)))
+					if (compositeStaging.getPkDichiarazioneTares() == null || compositeStaging.getPkDichiarazioneTares().equals(new BigDecimal(0)))
 					{
 						String errore = "Scarica il log";
 

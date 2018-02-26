@@ -16,7 +16,7 @@
 	<parent>
 		<artifactId>carryOnWeb</artifactId>
 		<groupId>it.eng.municipia.carryon.web</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<artifactId>carryOnWeb-ejb</artifactId>
@@ -38,10 +38,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-	
+
 		<poi.version>3.15</poi.version>
 		<itext.version>2.1.7</itext.version>
-			<primefaces.version>6.1</primefaces.version>
+		<primefaces.version>6.1</primefaces.version>
 	</properties>
 
 
@@ -107,25 +107,25 @@
 			<scope>test</scope>
 		</dependency>
 
-		
-		
+
+
 		<dependency>
 			<groupId>it.eng.tributi.prodotti.nettuno</groupId>
 			<artifactId>nettuno-services</artifactId>
 			<version>1.80-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		
-			<!-- PrimeFaces -->
+
+		<!-- PrimeFaces -->
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>${primefaces.version}</version>
 		</dependency>
 
-		
-		
-	
+
+
+
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -157,7 +157,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -169,11 +169,11 @@
 				<configuration>
 					<!-- Tell Maven we are using EJB 3.1 -->
 					<ejbVersion>3.1</ejbVersion>
-					 <archive>
-			            <manifest>
-			                <addClasspath>true</addClasspath>
-			            </manifest>
-			        </archive>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>

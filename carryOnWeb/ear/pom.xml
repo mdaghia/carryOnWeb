@@ -16,7 +16,7 @@
 	<parent>
 		<artifactId>carryOnWeb</artifactId>
 		<groupId>it.eng.municipia.carryon.web</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<artifactId>carryOnWeb-ear</artifactId>

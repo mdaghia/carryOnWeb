@@ -53,14 +53,12 @@ public class EJBReport implements IEJBReport
 
 		try
 		{
+			
+			  
 			TypedQuery<CompositeStaging> q = em.createQuery(""
-				+ "select distinct NEW it.eng.municipa.carryonweb.bean.CompositeStaging(t.idStagingMaster,s.fkIdentificativoModulo, s.prgDent) "
-				+ "from StagingMaster t, StagingDettaglio s " 
-				+ "where (( t.id.pkIdentificativoModulo = s.fkIdentificativoModulo or t.id.pkIdentificativoModulo is null "
-				+ ")"
-				+ "and ( s.id.codiceEnte = t.id.codiceEnte"
-				+ " or  t.id.codiceEnte is null "
-				+ "  ))and "
+				+ "select distinct NEW it.eng.municipa.carryonweb.bean.CompositeStaging(t.idStagingMaster,t.id.pkIdentificativoModulo, s.prgDent) "
+				+ "from StagingMaster t left join t.stagingDettaglios s "
+				+ "where "
 				+ "t.flgLavorata='N'" , CompositeStaging.class) ;
 			
 			listaCompositeStaging = q.getResultList();
