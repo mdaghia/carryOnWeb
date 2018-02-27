@@ -9,12 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-import it.eng.tributi.prodotti.nettuno.common.beans.documento.ICostanti;
 import it.eng.tributi.prodotti.nettuno.services.model.auto.DichiarazioneTares;
 
 public class EJBNettunoTares implements IEJBNettunoTares
 {
-
+	public static final String TARES_CODICE_STATO_DOCUMENTO_PRESENTATO = "P";
+	
 	@PersistenceContext(unitName = "nettunoPU")
 	private EntityManager em;
 
@@ -28,7 +28,7 @@ public class EJBNettunoTares implements IEJBNettunoTares
 		try
 		{
 			listaDichiarazioneTares = em.createQuery("from DichiarazioneTares t "
-				+ "where t.id.pkDichiarazioneTares = :pkDichiarazioneTares and t.codiceStatoOperativo = '" + ICostanti.TARES_CODICE_STATO_DOCUMENTO_PRESENTATO +"'").setParameter("pkDichiarazioneTares", pkDichiarazioneTares).getResultList();
+				+ "where t.id.pkDichiarazioneTares = :pkDichiarazioneTares and t.codiceStatoOperativo = '" + TARES_CODICE_STATO_DOCUMENTO_PRESENTATO +"'").setParameter("pkDichiarazioneTares", pkDichiarazioneTares).getResultList();
 		}
 		catch (NoResultException e)
 		{

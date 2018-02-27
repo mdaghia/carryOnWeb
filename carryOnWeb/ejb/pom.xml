@@ -108,13 +108,19 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>it.eng.municipia</groupId>
+			<artifactId>carry-on</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>it.eng.tributi.prodotti.nettuno</groupId>
 			<artifactId>nettuno-services</artifactId>
-			<version>1.80-SNAPSHOT</version>
-			<scope>compile</scope>
+			<version>1.80.0.carryon</version>
 		</dependency>
+
 
 		<!-- PrimeFaces -->
 		<dependency>
