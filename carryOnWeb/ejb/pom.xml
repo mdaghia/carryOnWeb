@@ -39,7 +39,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 
-		<poi.version>3.15</poi.version>
+		<poi.version>3.17</poi.version>
 		<itext.version>2.1.7</itext.version>
 		<primefaces.version>6.1</primefaces.version>
 	</properties>
