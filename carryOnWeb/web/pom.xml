@@ -37,7 +37,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<primefaces.version>6.1</primefaces.version>
+		<primefaces.version>8.0</primefaces.version>
 	</properties>
 
 
